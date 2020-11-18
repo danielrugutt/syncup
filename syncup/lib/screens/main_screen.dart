@@ -10,7 +10,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
+  AnimationController _backgroundController;
 
   /// Animation of rotating colors for background
   Animatable<Color> background = TweenSequence<Color>(
@@ -49,7 +49,7 @@ class _MainScreenState extends State<MainScreen>
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
+    _backgroundController = AnimationController(
       duration: const Duration(seconds: 10),
       vsync: this,
     )..repeat();
@@ -69,11 +69,11 @@ class _MainScreenState extends State<MainScreen>
         title: Text("Main Screen"),
       ),
       body: AnimatedBuilder(
-          animation: _controller,
+          animation: _backgroundController,
           builder: (context, child) {
             return Container(
-              color: background
-                  .evaluate(AlwaysStoppedAnimation(_controller.value)),
+              color: background.evaluate(
+                  AlwaysStoppedAnimation(_backgroundController.value)),
               child: Padding(
                 padding: EdgeInsets.symmetric(
                     vertical: MediaQuery.of(context).size.height * 0.05),
@@ -120,12 +120,12 @@ class JoinRoomButton extends StatefulWidget {
 }
 
 class _JoinRoomButtonState extends State<JoinRoomButton> {
-  TextEditingController _c;
+  TextEditingController _textEditingController;
   String _code = 'CS196';
 
   @override
   void initState() {
-    _c = TextEditingController();
+    _textEditingController = TextEditingController();
     super.initState();
   }
 
@@ -158,13 +158,13 @@ class _JoinRoomButtonState extends State<JoinRoomButton> {
                 child: TextField(
                   maxLength: 5,
                   decoration: InputDecoration(hintText: 'Room Code'),
-                  controller: _c,
+                  controller: _textEditingController,
                 ),
               ),
               FlatButton(
                 child: Text('Join'),
                 onPressed: () {
-                  String input = _c.text;
+                  String input = _textEditingController.text;
                   print('Inputted Code: $input');
                   if (input == _code) {
                     Navigator.pop(context);
